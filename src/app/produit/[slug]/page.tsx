@@ -1,3 +1,4 @@
+
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,13 +6,13 @@ import type { Metadata } from "next";
 import { products } from "@/lib/mock-data";
 import { formatPrice } from "@/lib/utils";
 import { ProductDetailClient } from "./ProductDetailClient";
-import { 
-  ThermometerSnowflake, 
-  Clock, 
-  Flame, 
-  ShieldCheck, 
-  Scale, 
-  ChevronRight, 
+import {
+  ThermometerSnowflake,
+  Clock,
+  Flame,
+  ShieldCheck,
+  Scale,
+  ChevronRight,
   Info,
   CheckCircle2
 } from "lucide-react";

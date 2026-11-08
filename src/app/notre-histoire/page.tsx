@@ -52,28 +52,28 @@ export default function NotreHistoirePage() {
           </p>
         </div>
 
-        {/* Narrative Section 2: The Craft */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-xl border border-cream-200 p-6 shadow-sm space-y-3">
-            <div className="w-9 h-9 rounded bg-cream-100 flex items-center justify-center text-terracotta">
-              <Sparkles className="w-5 h-5" />
+        {/* Narrative Section 2: The Craft — Deux par deux */}
+        <div className="grid grid-cols-2 gap-3 sm:gap-6">
+          <div className="bg-white rounded-xl border border-cream-200 p-3.5 sm:p-6 shadow-sm space-y-2 sm:space-y-3">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded bg-cream-100 flex items-center justify-center text-terracotta">
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <h3 className="font-serif text-lg font-bold text-darkbrown">
+            <h3 className="font-serif text-sm sm:text-lg font-bold text-darkbrown leading-tight">
               La Semoule Aérienne
             </h3>
-            <p className="text-xs text-darkbrown/75 leading-relaxed">
+            <p className="text-[11px] sm:text-xs text-darkbrown/75 leading-relaxed">
               Nous n&apos;utilisons aucune semoule précuite industrielle. Notre grain fin est frotté à l&apos;huile d&apos;olive, cuit trois fois à la vapeur douce et aéré à la main avec une touche de beurre clarifié traditionnel (smen).
             </p>
           </div>
 
-          <div className="bg-white rounded-xl border border-cream-200 p-6 shadow-sm space-y-3">
-            <div className="w-9 h-9 rounded bg-cream-100 flex items-center justify-center text-olive">
-              <Award className="w-5 h-5" />
+          <div className="bg-white rounded-xl border border-cream-200 p-3.5 sm:p-6 shadow-sm space-y-2 sm:space-y-3">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded bg-cream-100 flex items-center justify-center text-olive">
+              <Award className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <h3 className="font-serif text-lg font-bold text-darkbrown">
+            <h3 className="font-serif text-sm sm:text-lg font-bold text-darkbrown leading-tight">
               Le Bouillon aux Douze Épices
             </h3>
-            <p className="text-xs text-darkbrown/75 leading-relaxed">
+            <p className="text-[11px] sm:text-xs text-darkbrown/75 leading-relaxed">
               La véritable âme du couscous. Des os d&apos;agneau et des carcasses de volailles mijotés longuement avec des branches de céleri, de la coriandre fraîche, du safran en filaments et un mélange secret de ras el hanout artisanal.
             </p>
           </div>
