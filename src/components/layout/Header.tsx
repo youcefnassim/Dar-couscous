@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { ShoppingBag, Menu, X, ArrowRight } from "lucide-react";
@@ -45,15 +46,18 @@ export function Header() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <Link href="/" className="flex flex-col group">
-              <span className="font-serif text-2xl md:text-3xl font-bold tracking-tight text-darkbrown group-hover:text-terracotta transition-colors">
-                DAR COUSCOUS
-              </span>
-              <span className="text-[10px] uppercase tracking-widest text-olive font-semibold -mt-1">
-                Paris • Maison de Tradition
-              </span>
+          <div className="flex items-center justify-between h-20 md:h-22">
+            {/* Logo officiel */}
+            <Link href="/" className="flex items-center gap-3 py-1 group">
+              <div className="relative h-14 md:h-16 w-24 md:w-28 transition-transform duration-200 group-hover:scale-105">
+                <Image
+                  src="/images/logo.png"
+                  alt="DAR COUSCOUS — La tradition dans chaque boîte"
+                  fill
+                  priority
+                  className="object-contain object-left"
+                />
+              </div>
             </Link>
 
             {/* Desktop Navigation */}
@@ -117,6 +121,16 @@ export function Header() {
         {/* Mobile Dropdown Navigation */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-cream-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-lg">
+            <div className="pb-3 border-b border-cream-200 flex justify-center">
+              <div className="relative h-16 w-28">
+                <Image
+                  src="/images/logo.png"
+                  alt="DAR COUSCOUS"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            </div>
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (

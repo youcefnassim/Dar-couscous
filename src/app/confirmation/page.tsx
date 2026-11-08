@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { 
   CheckCircle2, 
@@ -64,8 +65,18 @@ function ConfirmationContent() {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Success Header Card */}
       <div className="bg-white rounded-xl border border-cream-200 p-8 text-center shadow-sm mb-8">
-        <div className="w-16 h-16 rounded-full bg-olive/15 text-olive flex items-center justify-center mx-auto mb-4">
-          <CheckCircle2 className="w-9 h-9" />
+        <div className="relative h-20 w-36 mx-auto mb-3">
+          <Image
+            src="/images/logo.png"
+            alt="DAR COUSCOUS"
+            fill
+            priority
+            className="object-contain"
+          />
+        </div>
+
+        <div className="w-12 h-12 rounded-full bg-olive/15 text-olive flex items-center justify-center mx-auto mb-3">
+          <CheckCircle2 className="w-7 h-7" />
         </div>
 
         <span className="text-xs uppercase tracking-widest text-olive font-bold">

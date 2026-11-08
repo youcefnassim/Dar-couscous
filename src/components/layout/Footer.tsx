@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Mail, Phone, MapPin, ShieldCheck, ThermometerSnowflake } from "lucide-react";
 
 export function Footer() {
@@ -6,12 +7,19 @@ export function Footer() {
     <footer className="bg-darkbrown text-cream-100 pt-16 pb-12 mt-auto border-t border-darkbrown-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
-          {/* Brand Info */}
+          {/* Brand Info & Logo */}
           <div className="lg:col-span-2 space-y-4">
-            <span className="font-serif text-2xl font-bold tracking-tight text-white block">
-              DAR COUSCOUS
-            </span>
-            <p className="font-serif italic text-cream-200 text-lg">
+            <Link href="/" className="inline-block bg-white/95 rounded-lg p-2.5 shadow-sm hover:opacity-95 transition-opacity">
+              <div className="relative h-16 w-32">
+                <Image
+                  src="/images/logo.png"
+                  alt="DAR COUSCOUS"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            </Link>
+            <p className="font-serif italic text-cream-200 text-base">
               « La tradition dans chaque boîte. »
             </p>
             <p className="text-sm text-cream-100/80 leading-relaxed max-w-sm">

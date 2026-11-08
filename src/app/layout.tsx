@@ -4,6 +4,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://darcouscous.fr"),
   title: "DAR COUSCOUS — La tradition dans chaque boîte | Paris",
   description:
     "Couscous d'exception préparé selon les recettes ancestrales maghrébines. Barquettes individuelles réfrigérées prêtes à réchauffer. Livraison à Paris et proche banlieue.",
@@ -18,6 +19,10 @@ export const metadata: Metadata = {
     "traiteur couscous Paris",
   ],
   authors: [{ name: "DAR COUSCOUS Paris" }],
+  icons: {
+    icon: "/images/logo.png",
+    apple: "/images/logo.png",
+  },
   openGraph: {
     title: "DAR COUSCOUS — La tradition dans chaque boîte",
     description: "Couscous traditionnel frais en barquettes individuelles livrées à Paris.",
@@ -27,10 +32,10 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=1200&q=80",
+        url: "/images/logo.png",
         width: 1200,
         height: 630,
-        alt: "DAR COUSCOUS Barquettes Fraîches Paris",
+        alt: "DAR COUSCOUS Logo",
       },
     ],
   },
@@ -49,7 +54,8 @@ export default function RootLayout({
     <html lang="fr" className="h-full">
       <head>
         <meta name="theme-color" content="#B66B48" />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/images/logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/images/logo.png" />
       </head>
       <body className="flex flex-col min-h-screen text-darkbrown bg-white antialiased selection:bg-terracotta selection:text-white">
         <Header />
