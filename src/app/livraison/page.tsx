@@ -33,41 +33,41 @@ export default function LivraisonPage() {
           </p>
         </div>
 
-        {/* 3 Pillars of DAR COUSCOUS delivery */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-xl border border-cream-200 shadow-sm space-y-3">
-            <div className="w-10 h-10 rounded-lg bg-cream-100 flex items-center justify-center text-terracotta">
-              <ThermometerSnowflake className="w-5 h-5" />
+        {/* 3 Pillars of DAR COUSCOUS delivery — Deux par deux */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
+          <div className="bg-white p-3.5 sm:p-6 rounded-xl border border-cream-200 shadow-sm space-y-2 sm:space-y-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-cream-100 flex items-center justify-center text-terracotta">
+              <ThermometerSnowflake className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <h3 className="font-serif text-lg font-bold text-darkbrown">
+            <h3 className="font-serif text-sm sm:text-lg font-bold text-darkbrown leading-tight">
               Température Contrôlée
             </h3>
-            <p className="text-xs text-darkbrown/70 leading-relaxed">
-              Transport réalisé en véhicules réfrigérés ou en caissons isothermes brevetés avec accumulateurs de froid. Température maintenue en permanence entre 0°C et 4°C.
+            <p className="text-[11px] sm:text-xs text-darkbrown/70 leading-relaxed">
+              Transport en véhicules réfrigérés (0°C à 4°C).
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-xl border border-cream-200 shadow-sm space-y-3">
-            <div className="w-10 h-10 rounded-lg bg-cream-100 flex items-center justify-center text-olive">
-              <Clock className="w-5 h-5" />
+          <div className="bg-white p-3.5 sm:p-6 rounded-xl border border-cream-200 shadow-sm space-y-2 sm:space-y-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-cream-100 flex items-center justify-center text-olive">
+              <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <h3 className="font-serif text-lg font-bold text-darkbrown">
+            <h3 className="font-serif text-sm sm:text-lg font-bold text-darkbrown leading-tight">
               Créneaux Ponctuels
             </h3>
-            <p className="text-xs text-darkbrown/70 leading-relaxed">
-              Choisissez votre créneau de livraison adapté : le midi pour votre pause déjeuner au bureau ou le soir pour un dîner sans cuisine.
+            <p className="text-[11px] sm:text-xs text-darkbrown/70 leading-relaxed">
+              Créneau midi (11h30-14h) ou soir (18h30-21h30).
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-xl border border-cream-200 shadow-sm space-y-3">
-            <div className="w-10 h-10 rounded-lg bg-cream-100 flex items-center justify-center text-darkbrown">
-              <ShieldCheck className="w-5 h-5" />
+          <div className="col-span-2 md:col-span-1 max-w-sm mx-auto w-full bg-white p-3.5 sm:p-6 rounded-xl border border-cream-200 shadow-sm space-y-2 sm:space-y-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-cream-100 flex items-center justify-center text-darkbrown">
+              <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <h3 className="font-serif text-lg font-bold text-darkbrown">
+            <h3 className="font-serif text-sm sm:text-lg font-bold text-darkbrown leading-tight">
               Fraîcheur Garantie
             </h3>
-            <p className="text-xs text-darkbrown/70 leading-relaxed">
-              Vos barquettes sont cuisinées le matin même. Elles disposent d&apos;une Date Limite de Consommation (DLC) de 4 jours au réfrigérateur.
+            <p className="text-[11px] sm:text-xs text-darkbrown/70 leading-relaxed">
+              Cuisiné le matin même. DLC 4 jours au réfrigérateur.
             </p>
           </div>
         </div>

@@ -3,16 +3,16 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { 
-  Trash2, 
-  Plus, 
-  Minus, 
-  ArrowRight, 
-  ShoppingBag, 
-  Tag, 
-  Truck, 
-  ShieldCheck, 
-  ChevronLeft 
+import {
+  Trash2,
+  Plus,
+  Minus,
+  ArrowRight,
+  ShoppingBag,
+  Tag,
+  Truck,
+  ShieldCheck,
+  ChevronLeft
 } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { formatPrice } from "@/lib/utils";
@@ -244,9 +244,8 @@ export default function CartPage() {
 
                 {promoMessage && (
                   <p
-                    className={`text-[11px] ${
-                      promoMessage.type === "success" ? "text-olive font-semibold" : "text-red-600"
-                    }`}
+                    className={`text-[11px] ${promoMessage.type === "success" ? "text-olive font-semibold" : "text-red-600"
+                      }`}
                   >
                     {promoMessage.text}
                   </p>
