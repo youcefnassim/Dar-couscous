@@ -81,18 +81,10 @@ export const products: Product[] = [
       {
         id: "img-royal-1",
         product_id: "prod-royal",
-        url: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=1200&q=80",
-        alt: "Couscous Royal DAR COUSCOUS dans sa barquette individuelle",
+        url: "/images/logo.png",
+        alt: "DAR Royal — Couscous d'exception DAR COUSCOUS",
         is_primary: true,
         position: 1,
-      },
-      {
-        id: "img-royal-2",
-        product_id: "prod-royal",
-        url: "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=1200&q=80",
-        alt: "Détail de la viande confite et semoule dorée",
-        is_primary: false,
-        position: 2,
       },
     ],
     stock_quantity: 45,
@@ -135,7 +127,7 @@ export const products: Product[] = [
       {
         id: "img-agneau-1",
         product_id: "prod-agneau",
-        url: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80",
+        url: "/images/logo.png",
         alt: "Couscous à l'agneau confit DAR COUSCOUS",
         is_primary: true,
         position: 1,
@@ -181,7 +173,7 @@ export const products: Product[] = [
       {
         id: "img-merguez-1",
         product_id: "prod-merguez",
-        url: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80",
+        url: "/images/logo.png",
         alt: "Couscous Merguez artisanales DAR COUSCOUS",
         is_primary: true,
         position: 1,
@@ -227,7 +219,7 @@ export const products: Product[] = [
       {
         id: "img-poulet-1",
         product_id: "prod-poulet",
-        url: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=1200&q=80",
+        url: "/images/logo.png",
         alt: "Couscous au poulet fermier DAR COUSCOUS",
         is_primary: true,
         position: 1,
@@ -273,7 +265,7 @@ export const products: Product[] = [
       {
         id: "img-vegetal-1",
         product_id: "prod-vegetal",
-        url: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1200&q=80",
+        url: "/images/logo.png",
         alt: "Couscous végétarien aux 7 légumes DAR COUSCOUS",
         is_primary: true,
         position: 1,

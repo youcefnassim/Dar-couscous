@@ -60,13 +60,13 @@ export function Hero() {
           {/* Right Image Column */}
           <div className="lg:col-span-5 relative">
             <div className="relative mx-auto max-w-md lg:max-w-none">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border-4 border-white">
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border-4 border-white bg-white flex items-center justify-center p-4">
                 <Image
-                  src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=1200&q=80"
-                  alt="Couscous traditionnel DAR COUSCOUS"
+                  src="/images/logo.png"
+                  alt="DAR COUSCOUS — La tradition dans chaque boîte"
                   fill
                   priority
-                  className="object-cover"
+                  className="object-contain p-4"
                 />
               </div>
 

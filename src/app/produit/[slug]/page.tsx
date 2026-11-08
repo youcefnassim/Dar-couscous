@@ -72,13 +72,13 @@ export default function ProductDetailPage({ params }: Props) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             {/* Gallery Column */}
             <div className="lg:col-span-6 space-y-4">
-              <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-cream-100 border border-cream-200 shadow-sm">
+              <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-white border border-cream-200 shadow-sm flex items-center justify-center">
                 <Image
-                  src={product.images[0]?.url || "https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=1200&q=80"}
+                  src={product.images[0]?.url || "/images/logo.png"}
                   alt={product.images[0]?.alt || product.name}
                   fill
                   priority
-                  className="object-cover"
+                  className="object-contain p-6"
                 />
                 {product.category && (
                   <span className="absolute top-4 left-4 bg-darkbrown text-cream-100 text-xs font-semibold px-3 py-1 rounded">

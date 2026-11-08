@@ -143,12 +143,12 @@ export default function CartPage() {
                   >
                     {/* Item Image + Details */}
                     <div className="flex items-center gap-4">
-                      <div className="relative w-20 h-20 rounded-md overflow-hidden bg-cream-100 border border-cream-200 shrink-0">
+                      <div className="relative w-20 h-20 rounded-md overflow-hidden bg-white border border-cream-200 shrink-0 flex items-center justify-center">
                         <Image
-                          src={item.image_url || "https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=300&q=80"}
+                          src={item.image_url || "/images/logo.png"}
                           alt={item.product_name}
                           fill
-                          className="object-cover"
+                          className="object-contain p-1"
                         />
                       </div>
                       <div>

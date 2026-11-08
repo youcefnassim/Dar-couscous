@@ -24,14 +24,14 @@ export default function NotreHistoirePage() {
           </p>
         </div>
 
-        {/* Hero image */}
-        <div className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-lg border border-cream-200">
+        {/* Hero brand banner */}
+        <div className="relative aspect-[16/9] sm:aspect-[21/9] rounded-2xl overflow-hidden shadow-lg border border-cream-200 bg-white flex items-center justify-center p-6 sm:p-10">
           <Image
-            src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=1400&q=80"
-            alt="Préparation de la semoule et des épices traditionnelles"
+            src="/images/logo.png"
+            alt="DAR COUSCOUS — La tradition dans chaque boîte"
             fill
             priority
-            className="object-cover"
+            className="object-contain p-6"
           />
         </div>
 

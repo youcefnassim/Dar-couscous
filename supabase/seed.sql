@@ -124,11 +124,11 @@ ON CONFLICT (id) DO NOTHING;
 -- 3. Insert Product Images
 INSERT INTO public.product_images (product_id, url, alt, is_primary, position)
 VALUES
-  ('p1000000-0000-0000-0000-000000000001', 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=1200&q=80', 'Couscous Royal DAR COUSCOUS', true, 1),
-  ('p1000000-0000-0000-0000-000000000002', 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80', 'Couscous Agneau DAR COUSCOUS', true, 1),
-  ('p1000000-0000-0000-0000-000000000003', 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=1200&q=80', 'Couscous Poulet DAR COUSCOUS', true, 1),
-  ('p1000000-0000-0000-0000-000000000004', 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80', 'Couscous Merguez DAR COUSCOUS', true, 1),
-  ('p1000000-0000-0000-0000-000000000005', 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1200&q=80', 'Couscous Végétal DAR COUSCOUS', true, 1);
+  ('p1000000-0000-0000-0000-000000000001', '/images/logo.png', 'Couscous Royal DAR COUSCOUS', true, 1),
+  ('p1000000-0000-0000-0000-000000000002', '/images/logo.png', 'Couscous Agneau DAR COUSCOUS', true, 1),
+  ('p1000000-0000-0000-0000-000000000003', '/images/logo.png', 'Couscous Poulet DAR COUSCOUS', true, 1),
+  ('p1000000-0000-0000-0000-000000000004', '/images/logo.png', 'Couscous Merguez DAR COUSCOUS', true, 1),
+  ('p1000000-0000-0000-0000-000000000005', '/images/logo.png', 'Couscous Végétal DAR COUSCOUS', true, 1);
 
 -- 4. Insert Initial Inventory
 INSERT INTO public.inventory (product_id, quantity_available, quantity_reserved, low_stock_threshold, daily_production_target)
