@@ -7,14 +7,26 @@ import { Plus, Check, Eye } from "lucide-react";
 import { Product } from "@/types";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/store/cartStore";
+import { useCatalogStore } from "@/store/catalogStore";
 
 interface ProductCardProps {
   product: Product;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product: initialProduct }: ProductCardProps) {
   const [isAdded, setIsAdded] = useState(false);
   const addItem = useCartStore((state) => state.addItem);
+
+  const liveProduct = useCatalogStore((state) =>
+    state.products.find((p) => p.id === initialProduct.id)
+  ) || initialProduct;
+
+  // Mask product completely if deactivated by admin
+  if (!liveProduct.is_active) {
+    return null;
+  }
+
+  const product = liveProduct;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();

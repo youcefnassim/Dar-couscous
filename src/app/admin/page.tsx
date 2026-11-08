@@ -14,10 +14,12 @@ import {
 } from "lucide-react";
 import { initialAdminOrders, initialInventory } from "@/lib/admin-mock-data";
 import { formatPrice } from "@/lib/utils";
+import { useCatalogStore } from "@/store/catalogStore";
 
 export default function AdminDashboardPage() {
-  const [orders, setOrders] = useState(initialAdminOrders);
+  const orders = useCatalogStore((state) => state.orders) || initialAdminOrders;
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const liveInventory = useCatalogStore((state) => state.inventory) || initialInventory;
 
   // KPI Calculations
   const totalRevenueCents = orders
@@ -29,7 +31,7 @@ export default function AdminDashboardPage() {
   );
 
   const completedOrders = orders.filter((o) => o.status === "delivered");
-  const lowStockItems = initialInventory.filter(
+  const lowStockItems = liveInventory.filter(
     (item) => item.available_portions <= item.low_stock_threshold
   );
 
@@ -149,7 +151,7 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-          {initialInventory.map((item) => (
+          {liveInventory.map((item) => (
             <div
               key={item.product_id}
               className={`p-3.5 rounded-lg border text-xs space-y-2 ${

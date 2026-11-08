@@ -16,6 +16,7 @@ import {
   ChevronLeft
 } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
+import { useCatalogStore } from "@/store/catalogStore";
 import { formatPrice } from "@/lib/utils";
 import { deliveryZones, deliverySlots } from "@/lib/mock-data";
 
@@ -150,6 +151,37 @@ export default function CheckoutPage() {
       // Store in session for confirmation display
       if (typeof window !== "undefined") {
         sessionStorage.setItem("latest_order", JSON.stringify(orderPayload));
+      }
+
+      // Sync order directly with the live Admin Dashboard
+      try {
+        useCatalogStore.getState().addOrder({
+          id: `ord-${Date.now()}`,
+          order_number: orderPayload.orderNumber,
+          customer_name: `${formData.firstName} ${formData.lastName}`.trim(),
+          customer_email: formData.email,
+          customer_phone: formData.phone,
+          delivery_address: formData.address,
+          delivery_postal_code: formData.postalCode,
+          delivery_city: formData.city,
+          delivery_instructions: formData.instructions,
+          delivery_date: formData.deliveryDate,
+          delivery_slot: orderPayload.delivery.slot,
+          status: "confirmed",
+          total_cents: totalCents,
+          subtotal_cents: subtotalCents,
+          delivery_fee_cents: deliveryFeeCents,
+          items_count: items.reduce((acc, i) => acc + i.quantity, 0),
+          items: items.map((i) => ({
+            product_name: i.product_name,
+            quantity: i.quantity,
+            price_cents: i.price_cents,
+            weight_grams: i.weight_grams,
+          })),
+          created_at: new Date().toISOString(),
+        });
+      } catch (e) {
+        console.warn("Could not save to live store", e);
       }
 
       // Simulate payment step & forward to confirmation

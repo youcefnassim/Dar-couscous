@@ -13,24 +13,12 @@ import {
   Calendar
 } from "lucide-react";
 import { initialInventory, InventoryItem } from "@/lib/admin-mock-data";
+import { useCatalogStore } from "@/store/catalogStore";
 
 export default function AdminInventoryPage() {
-  const [inventory, setInventory] = useState<InventoryItem[]>(initialInventory);
+  const inventory = useCatalogStore((state) => state.inventory) || initialInventory;
+  const adjustStock = useCatalogStore((state) => state.adjustStock);
   const [temperatureCheck, setTemperatureCheck] = useState<number>(2.4);
-
-  const adjustStock = (productId: string, amount: number) => {
-    setInventory((prev) =>
-      prev.map((item) =>
-        item.product_id === productId
-          ? {
-              ...item,
-              available_portions: Math.max(0, item.available_portions + amount),
-              last_batch_time: "Mis à jour à l'instant",
-            }
-          : item
-      )
-    );
-  };
 
   const totalPortions = inventory.reduce((acc, item) => acc + item.available_portions, 0);
   const totalTarget = inventory.reduce((acc, item) => acc + item.daily_target, 0);

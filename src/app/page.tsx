@@ -1,55 +1,19 @@
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Hero } from "@/components/home/Hero";
 import { WhyUs } from "@/components/home/WhyUs";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import { DeliverySection } from "@/components/home/DeliverySection";
-import { ProductCard } from "@/components/products/ProductCard";
-import { products } from "@/lib/mock-data";
+import { FeaturedProducts } from "@/components/home/FeaturedProducts";
 
 export default function HomePage() {
-  // 4 featured products
-  const featuredProducts = products.filter((p) => p.is_active).slice(0, 4);
-
   return (
     <div className="flex flex-col min-h-screen">
       {/* 1. Hero Section */}
       <Hero />
 
-      {/* 2. Featured Products Grid */}
-      <section className="py-16 bg-white border-b border-cream-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
-            <div>
-              <div className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-terracotta font-bold mb-1">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Nos Plats Emblématiques</span>
-              </div>
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-darkbrown">
-                Les Couscous du Jour
-              </h2>
-              <p className="text-sm text-darkbrown/70 mt-1 max-w-xl">
-                Cuisinés le matin même avec des ingrédients rigoureusement sourcés. Barquettes individuelles réfrigérées prêtes à réchauffer.
-              </p>
-            </div>
-
-            <Link
-              href="/menu"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-terracotta hover:text-terracotta-hover transition-colors shrink-0"
-            >
-              <span>Voir tout le menu (5 recettes)</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          {/* Produits affichés deux par deux */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* 2. Featured Products Grid (Live synchronized) */}
+      <FeaturedProducts />
 
       {/* 3. Pourquoi DAR COUSCOUS ? */}
       <WhyUs />

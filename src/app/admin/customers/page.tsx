@@ -13,9 +13,10 @@ import {
 } from "lucide-react";
 import { initialAdminCustomers, AdminCustomer } from "@/lib/admin-mock-data";
 import { formatPrice } from "@/lib/utils";
+import { useCatalogStore } from "@/store/catalogStore";
 
 export default function AdminCustomersPage() {
-  const [customers, setCustomers] = useState<AdminCustomer[]>(initialAdminCustomers);
+  const customers = useCatalogStore((state) => state.customers) || initialAdminCustomers;
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredCustomers = customers.filter(

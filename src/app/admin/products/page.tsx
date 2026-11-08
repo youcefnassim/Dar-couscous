@@ -17,13 +17,18 @@ import {
 import { products as initialProducts } from "@/lib/mock-data";
 import { formatPrice } from "@/lib/utils";
 import { Product } from "@/types";
+import { useCatalogStore } from "@/store/catalogStore";
 
 export default function AdminProductsPage() {
-  const [productsList, setProductsList] = useState<Product[]>(initialProducts);
+  const productsList = useCatalogStore((state) => state.products);
+  const toggleProductActive = useCatalogStore((state) => state.toggleProductActive);
+  const updateProduct = useCatalogStore((state) => state.updateProduct);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [editPrice, setEditPrice] = useState<number>(0);
   const [editWeight, setEditWeight] = useState<number>(0);
+  const [syncFeedback, setSyncFeedback] = useState<string | null>(null);
 
   const filteredProducts = productsList.filter(
     (p) =>
@@ -31,10 +36,14 @@ export default function AdminProductsPage() {
       (p.category?.name && p.category.name.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const toggleProductActive = (id: string) => {
-    setProductsList((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, is_active: !p.is_active } : p))
+  const handleToggle = (id: string, currentStatus: boolean, name: string) => {
+    toggleProductActive(id);
+    setSyncFeedback(
+      currentStatus
+        ? `« ${name} » désactivé : désormais masqué sur le site client.`
+        : `« ${name} » activé : désormais visible en direct sur le site.`
     );
+    setTimeout(() => setSyncFeedback(null), 3500);
   };
 
   const handleStartEdit = (product: Product) => {
@@ -45,17 +54,12 @@ export default function AdminProductsPage() {
 
   const handleSaveEdit = () => {
     if (!editingProduct) return;
-    setProductsList((prev) =>
-      prev.map((p) =>
-        p.id === editingProduct.id
-          ? {
-              ...p,
-              price_cents: Math.round(editPrice * 100),
-              weight_grams: editWeight,
-            }
-          : p
-      )
-    );
+    updateProduct(editingProduct.id, {
+      price_cents: Math.round(editPrice * 100),
+      weight_grams: editWeight,
+    });
+    setSyncFeedback(`Prix et portion de « ${editingProduct.name} » mis à jour en direct sur le site.`);
+    setTimeout(() => setSyncFeedback(null), 3500);
     setEditingProduct(null);
   };
 
@@ -80,6 +84,19 @@ export default function AdminProductsPage() {
           </span>
         </div>
       </div>
+
+      {/* Sync Feedback Toast */}
+      {syncFeedback && (
+        <div className="bg-olive/15 border border-olive/30 text-olive p-3 rounded-xl text-xs font-bold flex items-center justify-between shadow-sm animate-in fade-in duration-150">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 shrink-0 text-olive" />
+            <span>{syncFeedback}</span>
+          </div>
+          <span className="text-[10px] bg-olive text-white px-2 py-0.5 rounded font-mono uppercase">
+            Live Sync
+          </span>
+        </div>
+      )}
 
       {/* Quick Search & Summary */}
       <div className="bg-white p-4 rounded-xl border border-cream-200 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
@@ -183,7 +200,7 @@ export default function AdminProductsPage() {
 
               <button
                 type="button"
-                onClick={() => toggleProductActive(product.id)}
+                onClick={() => handleToggle(product.id, product.is_active, product.name)}
                 className={`py-1.5 px-3 rounded-lg text-xs font-semibold transition-colors ${
                   product.is_active
                     ? "bg-red-50 text-red-700 hover:bg-red-100"

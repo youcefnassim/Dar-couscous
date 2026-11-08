@@ -15,15 +15,20 @@ import {
   ChevronLeft
 } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
+import { useCatalogStore } from "@/store/catalogStore";
 import { formatPrice } from "@/lib/utils";
 
-const PARIS_DELIVERY_FEE_CENTS = 390;
-const FREE_DELIVERY_THRESHOLD_CENTS = 3500;
+const DEFAULT_PARIS_DELIVERY_FEE_CENTS = 390;
+const DEFAULT_FREE_DELIVERY_THRESHOLD_CENTS = 3500;
 
 export default function CartPage() {
   const [mounted, setMounted] = useState(false);
   const [promoInput, setPromoInput] = useState("");
   const [promoMessage, setPromoMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  const settings = useCatalogStore((state) => state.settings);
+  const deliveryFeeBase = settings?.deliveryFeeCents ?? DEFAULT_PARIS_DELIVERY_FEE_CENTS;
+  const freeDeliveryThreshold = settings?.freeDeliveryThresholdCents ?? DEFAULT_FREE_DELIVERY_THRESHOLD_CENTS;
 
   const {
     items,
@@ -51,10 +56,10 @@ export default function CartPage() {
 
   const subtotalCents = getSubtotalCents();
   const discountCents = getDiscountCents();
-  const isFreeDelivery = subtotalCents >= FREE_DELIVERY_THRESHOLD_CENTS;
-  const deliveryFeeCents = items.length === 0 ? 0 : isFreeDelivery ? 0 : PARIS_DELIVERY_FEE_CENTS;
+  const isFreeDelivery = subtotalCents >= freeDeliveryThreshold;
+  const deliveryFeeCents = items.length === 0 ? 0 : isFreeDelivery ? 0 : deliveryFeeBase;
   const totalCents = Math.max(0, subtotalCents - discountCents + deliveryFeeCents);
-  const remainingForFreeDelivery = Math.max(0, FREE_DELIVERY_THRESHOLD_CENTS - subtotalCents);
+  const remainingForFreeDelivery = Math.max(0, freeDeliveryThreshold - subtotalCents);
 
   const handleApplyPromo = (e: React.FormEvent) => {
     e.preventDefault();
@@ -122,12 +127,12 @@ export default function CartPage() {
                   <div className="bg-cream-100/70 p-3 rounded-md space-y-1.5">
                     <div className="flex justify-between text-xs text-darkbrown">
                       <span>Ajoutez <strong>{formatPrice(remainingForFreeDelivery)}</strong> pour la livraison offerte</span>
-                      <span className="font-bold">{Math.round((subtotalCents / FREE_DELIVERY_THRESHOLD_CENTS) * 100)}%</span>
+                      <span className="font-bold">{Math.round((subtotalCents / freeDeliveryThreshold) * 100)}%</span>
                     </div>
                     <div className="w-full bg-cream-300 h-1.5 rounded-full overflow-hidden">
                       <div
                         className="bg-terracotta h-full rounded-full transition-all duration-300"
-                        style={{ width: `${Math.min(100, (subtotalCents / FREE_DELIVERY_THRESHOLD_CENTS) * 100)}%` }}
+                        style={{ width: `${Math.min(100, (subtotalCents / freeDeliveryThreshold) * 100)}%` }}
                       />
                     </div>
                   </div>

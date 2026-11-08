@@ -18,9 +18,11 @@ import {
 } from "lucide-react";
 import { initialAdminOrders, AdminOrder } from "@/lib/admin-mock-data";
 import { formatPrice } from "@/lib/utils";
+import { useCatalogStore } from "@/store/catalogStore";
 
 export default function AdminOrdersPage() {
-  const [orders, setOrders] = useState<AdminOrder[]>(initialAdminOrders);
+  const orders = useCatalogStore((state) => state.orders) || initialAdminOrders;
+  const updateStatusInStore = useCatalogStore((state) => state.updateOrderStatus);
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedOrder, setSelectedOrder] = useState<AdminOrder | null>(null);
@@ -35,9 +37,7 @@ export default function AdminOrdersPage() {
   });
 
   const updateOrderStatus = (orderId: string, newStatus: AdminOrder["status"]) => {
-    setOrders((prev) =>
-      prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
-    );
+    updateStatusInStore(orderId, newStatus);
     if (selectedOrder && selectedOrder.id === orderId) {
       setSelectedOrder({ ...selectedOrder, status: newStatus });
     }

@@ -12,9 +12,18 @@ import {
   Sparkles
 } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
+import { useCatalogStore } from "@/store/catalogStore";
 
 export default function AdminAnalyticsPage() {
   const [period, setPeriod] = useState<"day" | "week" | "month">("month");
+  const orders = useCatalogStore((state) => state.orders) || [];
+
+  const totalRevenueCents = orders
+    .filter((o) => o.status !== "cancelled" && o.status !== "refunded")
+    .reduce((acc, o) => acc + o.total_cents, 0);
+
+  const totalPortionsSold = orders.reduce((acc, o) => acc + o.items_count, 0);
+  const avgBasketCents = orders.length > 0 ? Math.round(totalRevenueCents / orders.length) : 0;
 
   return (
     <div className="space-y-6">
@@ -52,25 +61,27 @@ export default function AdminAnalyticsPage() {
         <div className="bg-white p-4 rounded-xl border border-cream-200 shadow-sm">
           <span className="text-xs text-darkbrown/60 font-medium block">Chiffre d&apos;affaires</span>
           <span className="font-serif text-2xl font-bold text-darkbrown mt-1 block">
-            0,00 €
+            {formatPrice(totalRevenueCents)}
           </span>
-          <span className="text-[11px] text-darkbrown/50">Lancement officiel</span>
+          <span className="text-[11px] text-darkbrown/50">
+            {orders.length} commande{orders.length > 1 ? "s" : ""}
+          </span>
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-cream-200 shadow-sm">
           <span className="text-xs text-darkbrown/60 font-medium block">Barquettes vendues</span>
           <span className="font-serif text-2xl font-bold text-darkbrown mt-1 block">
-            0
+            {totalPortionsSold}
           </span>
-          <span className="text-[11px] text-darkbrown/50">Objectif du mois : 500</span>
+          <span className="text-[11px] text-darkbrown/50">Production fraîche</span>
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-cream-200 shadow-sm">
           <span className="text-xs text-darkbrown/60 font-medium block">Panier moyen</span>
           <span className="font-serif text-2xl font-bold text-olive mt-1 block">
-            0,00 €
+            {formatPrice(avgBasketCents)}
           </span>
-          <span className="text-[11px] text-olive font-medium">Cible : 32,50 €</span>
+          <span className="text-[11px] text-olive font-medium">Par commande</span>
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-cream-200 shadow-sm">

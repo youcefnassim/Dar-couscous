@@ -13,49 +13,13 @@ import {
   Sparkles
 } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
-
-interface PromoCode {
-  id: string;
-  code: string;
-  description: string;
-  discount_percent: number;
-  min_order_cents: number;
-  is_active: boolean;
-  uses_count: number;
-}
-
-const initialPromos: PromoCode[] = [
-  {
-    id: "promo-1",
-    code: "BIENVENUE10",
-    description: "10% de réduction pour votre première commande à Paris.",
-    discount_percent: 10,
-    min_order_cents: 2500,
-    is_active: true,
-    uses_count: 0,
-  },
-  {
-    id: "promo-2",
-    code: "PARIS15",
-    description: "15% de remise spéciale pour les commandes de groupe.",
-    discount_percent: 15,
-    min_order_cents: 4000,
-    is_active: true,
-    uses_count: 0,
-  },
-  {
-    id: "promo-3",
-    code: "COUSCOUSLOVE",
-    description: "Offre fidélité week-end pour nos habitués parisiens.",
-    discount_percent: 20,
-    min_order_cents: 5000,
-    is_active: false,
-    uses_count: 0,
-  },
-];
+import { useCatalogStore, PromoCode } from "@/store/catalogStore";
 
 export default function AdminPromotionsPage() {
-  const [promos, setPromos] = useState<PromoCode[]>(initialPromos);
+  const promos = useCatalogStore((state) => state.promoCodes);
+  const togglePromo = useCatalogStore((state) => state.togglePromoCode);
+  const addPromo = useCatalogStore((state) => state.addPromoCode);
+
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newCode, setNewCode] = useState("");
@@ -67,12 +31,6 @@ export default function AdminPromotionsPage() {
     navigator.clipboard.writeText(code);
     setCopiedCode(code);
     setTimeout(() => setCopiedCode(null), 2000);
-  };
-
-  const togglePromo = (id: string) => {
-    setPromos((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, is_active: !p.is_active } : p))
-    );
   };
 
   const handleAddPromo = (e: React.FormEvent) => {
@@ -89,7 +47,7 @@ export default function AdminPromotionsPage() {
       uses_count: 0,
     };
 
-    setPromos((prev) => [promo, ...prev]);
+    addPromo(promo);
     setNewCode("");
     setNewDesc("");
     setShowAddForm(false);

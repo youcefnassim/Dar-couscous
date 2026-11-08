@@ -14,21 +14,42 @@ import {
   Euro
 } from "lucide-react";
 
+import { useCatalogStore } from "@/store/catalogStore";
+
 export default function AdminSettingsPage() {
-  const [atelierName, setAtelierName] = useState("DAR COUSCOUS");
-  const [address, setAddress] = useState("Atelier Central Paris, 11e Arrondissement");
-  const [postalCode, setPostalCode] = useState("75011");
-  const [city, setCity] = useState("Paris");
-  const [emailContact, setEmailContact] = useState("contact@darcouscous.com");
-  const [emailAdmin, setEmailAdmin] = useState("admin@darcouscous.com");
-  const [phone, setPhone] = useState("+33 1 42 00 00 00");
-  const [deliveryFee, setDeliveryFee] = useState(3.9);
-  const [freeDeliveryThreshold, setFreeDeliveryThreshold] = useState(35.0);
-  const [tvaRate, setTvaRate] = useState(10.0);
+  const currentSettings = useCatalogStore((state) => state.settings);
+  const updateSettings = useCatalogStore((state) => state.updateSettings);
+
+  const [atelierName, setAtelierName] = useState(currentSettings?.atelierName || "DAR COUSCOUS");
+  const [address, setAddress] = useState(currentSettings?.address || "Atelier Central Paris, 11e Arrondissement");
+  const [postalCode, setPostalCode] = useState(currentSettings?.postalCode || "75011");
+  const [city, setCity] = useState(currentSettings?.city || "Paris");
+  const [emailContact, setEmailContact] = useState(currentSettings?.emailContact || "contact@darcouscous.com");
+  const [emailAdmin, setEmailAdmin] = useState(currentSettings?.emailAdmin || "admin@darcouscous.com");
+  const [phone, setPhone] = useState(currentSettings?.phone || "+33 1 42 00 00 00");
+  const [deliveryFee, setDeliveryFee] = useState(
+    currentSettings ? currentSettings.deliveryFeeCents / 100 : 3.9
+  );
+  const [freeDeliveryThreshold, setFreeDeliveryThreshold] = useState(
+    currentSettings ? currentSettings.freeDeliveryThresholdCents / 100 : 35.0
+  );
+  const [tvaRate, setTvaRate] = useState(currentSettings?.tvaRate || 10.0);
   const [savedSuccess, setSavedSuccess] = useState(false);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
+    updateSettings({
+      atelierName,
+      address,
+      postalCode,
+      city,
+      emailContact,
+      emailAdmin,
+      phone,
+      deliveryFeeCents: Math.round(deliveryFee * 100),
+      freeDeliveryThresholdCents: Math.round(freeDeliveryThreshold * 100),
+      tvaRate,
+    });
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 3000);
   };

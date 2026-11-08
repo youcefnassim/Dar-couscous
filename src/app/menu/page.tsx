@@ -3,15 +3,23 @@
 import { useState, useMemo } from "react";
 import { Search, SlidersHorizontal, Sparkles } from "lucide-react";
 import { ProductCard } from "@/components/products/ProductCard";
-import { products, categories } from "@/lib/mock-data";
+import { products as fallbackProducts, categories } from "@/lib/mock-data";
+import { useCatalogStore } from "@/store/catalogStore";
 
 export default function MenuPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("featured");
 
+  const liveProducts = useCatalogStore((state) => state.products) || fallbackProducts;
+
+  const activeProducts = useMemo(
+    () => liveProducts.filter((p) => p.is_active),
+    [liveProducts]
+  );
+
   const filteredProducts = useMemo(() => {
-    return products
+    return liveProducts
       .filter((product) => {
         // Only active products
         if (!product.is_active) return false;
@@ -39,7 +47,7 @@ export default function MenuPage() {
         if (sortBy === "name-asc") return a.name.localeCompare(b.name);
         return (b.is_featured ? 1 : 0) - (a.is_featured ? 1 : 0);
       });
-  }, [selectedCategory, searchQuery, sortBy]);
+  }, [liveProducts, selectedCategory, searchQuery, sortBy]);
 
   return (
     <div className="bg-cream-50/40 min-h-screen py-10 md:py-16">
@@ -71,12 +79,12 @@ export default function MenuPage() {
                   : "bg-cream-100 text-darkbrown hover:bg-cream-200"
               }`}
             >
-              Tous ({products.filter((p) => p.is_active).length})
+              Tous ({activeProducts.length})
             </button>
 
             {categories.map((cat) => {
-              const count = products.filter(
-                (p) => p.is_active && p.category_id === cat.id
+              const count = activeProducts.filter(
+                (p) => p.category_id === cat.id
               ).length;
               const isSelected = selectedCategory === cat.id;
               return (

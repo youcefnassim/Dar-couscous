@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { CartItem } from "@/types";
+import { useCatalogStore } from "./catalogStore";
 
 interface CartStore {
   items: CartItem[];
@@ -61,6 +62,23 @@ export const useCartStore = create<CartStore>()(
 
       applyPromoCode: (code: string) => {
         const clean = code.trim().toUpperCase();
+        try {
+          const catalogPromos = useCatalogStore.getState().promoCodes;
+          const matchingPromo = catalogPromos?.find(
+            (p) => p.code.toUpperCase() === clean && p.is_active
+          );
+
+          if (matchingPromo) {
+            const subtotal = get().getSubtotalCents();
+            if (subtotal >= matchingPromo.min_order_cents) {
+              set({ promoCode: clean, discountPercentage: matchingPromo.discount_percent });
+              return true;
+            }
+          }
+        } catch (e) {
+          console.warn("Could not check catalog promos", e);
+        }
+
         if (clean === "BIENVENUE10" || clean === "DAR10") {
           set({ promoCode: clean, discountPercentage: 10 });
           return true;
