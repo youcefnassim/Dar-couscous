@@ -1,18 +1,17 @@
-
 "use client";
 
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { ShoppingBag, Menu, X, ArrowRight } from "lucide-react";
+import { ShoppingBag, Menu, X, ArrowRight, Phone } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 
 const navLinks = [
   { href: "/", label: "Accueil" },
-  { href: "/menu", label: "Notre menu" },
-  { href: "/notre-histoire", label: "Notre histoire" },
-  { href: "/livraison", label: "Livraison" },
+  { href: "/menu", label: "Notre Menu" },
+  { href: "/notre-histoire", label: "Notre Histoire" },
+  { href: "/livraison", label: "Livraison Paris" },
 ];
 
 export function Header() {
@@ -26,9 +25,9 @@ export function Header() {
   useEffect(() => {
     setMounted(true);
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 15);
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -38,104 +37,93 @@ export function Header() {
   }
 
   return (
-    <>
-      {/* Top Banner Notice for Paris Delivery */}
-      <div className="bg-darkbrown text-cream text-xs py-1.5 px-4 text-center font-medium tracking-wide">
-        <span>✨ Couscous d&apos;artisan préparé à Paris • Barquettes réfrigérées prêtes à réchauffer • Livraison offerte dès 35 €</span>
-      </div>
+    <header
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+        scrolled
+          ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-cream-200"
+          : "bg-white border-b border-cream-100"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20">
+          {/* Logo officiel en vedette */}
+          <Link href="/" className="flex items-center gap-2 group py-1">
+            <div className="relative h-12 sm:h-16 w-32 sm:w-36 transition-transform duration-200 group-hover:scale-[1.02]">
+              <Image
+                src="/images/logo.png"
+                alt="DAR COUSCOUS — La tradition dans chaque boîte"
+                fill
+                priority
+                className="object-contain object-left"
+              />
+            </div>
+          </Link>
 
-      <header
+          {/* Desktop Navigation Links */}
+          <nav className="hidden md:flex items-center space-x-1 lg:space-x-2">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all ${
+                    isActive
+                      ? "bg-cream-100 text-terracotta"
+                      : "text-darkbrown/80 hover:text-darkbrown hover:bg-cream-50"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </nav>
 
-        className={`sticky top-0 z-40 w-full transition-all duration-200 border-b ${scrolled
-          ? "bg-white/95 backdrop-blur-md shadow-sm border-cream-200"
-          : "bg-white border-cream-200"
-          }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20 md:h-22">
-            {/* Logo officiel */}
-            <Link href="/" className="flex items-center gap-3 py-1 group">
-              <div className="relative h-14 md:h-16 w-24 md:w-28 transition-transform duration-200 group-hover:scale-105">
-                <Image
-                  src="/images/logo.png"
-                  alt="DAR COUSCOUS — La tradition dans chaque boîte"
-                  fill
-                  priority
-                  className="object-contain object-left"
-                />
-              </div>
+          {/* Right Actions: Cart & CTA */}
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            {/* CTA Commander Desktop */}
+            <Link
+              href="/menu"
+              className="hidden lg:inline-flex items-center gap-1.5 bg-terracotta text-white px-4 py-2 rounded-full text-xs font-semibold hover:bg-terracotta-hover transition-colors shadow-sm active:scale-95"
+            >
+              <span>Commander</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              {navLinks.map((link) => {
-                const isActive = pathname === link.href;
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`text-sm font-medium transition-colors hover:text-terracotta relative py-1 ${isActive ? "text-terracotta font-semibold" : "text-darkbrown"
-                      }`}
-                  >
-                    {link.label}
-                    {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-terracotta rounded-full" />
-                    )}
-                  </Link>
-                );
-              })}
-            </nav>
+            {/* Cart Button */}
+            <Link
+              href="/panier"
+              className="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-cream-200 bg-cream-50 hover:bg-cream-100 text-darkbrown transition-all shadow-sm active:scale-95"
+              aria-label="Voir mon panier"
+            >
+              <ShoppingBag className="w-4 h-4 text-terracotta" />
+              <span className="text-xs font-bold text-darkbrown hidden xs:inline">
+                Panier
+              </span>
+              {mounted && itemCount > 0 && (
+                <span className="bg-terracotta text-white font-bold text-[10px] min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center shadow-xs">
+                  {itemCount}
+                </span>
+              )}
+            </Link>
 
-            {/* Right Actions: Cart & CTA */}
-            <div className="flex items-center space-x-4">
-              <Link
-                href="/menu"
-                className="hidden lg:inline-flex items-center gap-1.5 bg-terracotta text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-terracotta-hover transition-colors shadow-sm"
-              >
-                <span>Commander</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-
-              {/* Cart Button */}
-              <Link
-                href="/panier"
-                className="relative p-2.5 rounded-full border border-cream-200 bg-cream-50 hover:bg-cream-100 text-darkbrown transition-colors"
-                aria-label="Voir mon panier"
-              >
-                <ShoppingBag className="w-5 h-5 text-darkbrown" />
-                {mounted && itemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-terracotta text-white font-bold text-[11px] w-5 h-5 rounded-full flex items-center justify-center shadow-sm">
-                    {itemCount}
-                  </span>
-                )}
-              </Link>
-
-              {/* Mobile Menu Button */}
-              <button
-                type="button"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 rounded-md text-darkbrown hover:bg-cream-100 transition-colors"
-                aria-label="Ouvrir le menu"
-              >
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-            </div>
+            {/* Mobile Hamburger Toggle */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg text-darkbrown hover:bg-cream-100 transition-colors"
+              aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Dropdown Navigation */}
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-cream-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-lg">
-            <div className="pb-3 border-b border-cream-200 flex justify-center">
-              <div className="relative h-16 w-28">
-                <Image
-                  src="/images/logo.png"
-                  alt="DAR COUSCOUS"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            </div>
+      {/* Mobile Navigation Drawer */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-cream-200 bg-white/98 backdrop-blur-md px-5 pt-4 pb-6 space-y-4 shadow-xl animate-in slide-in-from-top-2 duration-200">
+          <nav className="space-y-1">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -143,29 +131,36 @@ export function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`block py-2 text-base font-medium rounded-md px-3 transition-colors ${isActive
-                    ? "bg-cream-100 text-terracotta font-semibold"
-                    : "text-darkbrown hover:bg-cream-50"
-                    }`}
+                  className={`flex items-center justify-between py-2.5 px-3 rounded-lg text-sm font-semibold transition-colors ${
+                    isActive
+                      ? "bg-cream-100 text-terracotta"
+                      : "text-darkbrown hover:bg-cream-50"
+                  }`}
                 >
-                  {link.label}
+                  <span>{link.label}</span>
+                  <ArrowRight className="w-4 h-4 text-darkbrown/30" />
                 </Link>
               );
             })}
-            <div className="pt-2 border-t border-cream-200">
-              <Link
-                href="/menu"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center gap-2 bg-terracotta text-white py-3 rounded-md font-medium hover:bg-terracotta-hover transition-colors text-center"
-              >
-                <span>Découvrir le menu</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+          </nav>
+
+          <div className="pt-3 border-t border-cream-200 space-y-2">
+            <Link
+              href="/menu"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full flex items-center justify-center gap-2 bg-terracotta text-white py-3 rounded-xl text-xs font-bold tracking-wide hover:bg-terracotta-hover transition-colors shadow-sm"
+            >
+              <span>Découvrir la carte &amp; Commander</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+
+            <div className="flex items-center justify-center gap-2 pt-1 text-[11px] text-darkbrown/60">
+              <Phone className="w-3.5 h-3.5 text-terracotta" />
+              <span>Atelier Paris 11e : 01 42 00 24 50</span>
             </div>
           </div>
-        )}
-      </header>
-    </>
+        </div>
+      )}
+    </header>
   );
 }
-
