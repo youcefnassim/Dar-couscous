@@ -73,9 +73,8 @@ export default function AdminDashboardPage() {
             <span className="font-serif text-2xl font-bold text-darkbrown mt-1 block">
               {formatPrice(totalRevenueCents)}
             </span>
-            <span className="text-[11px] text-olive font-medium flex items-center gap-1 mt-1">
-              <TrendingUp className="w-3.5 h-3.5" />
-              <span>+18.4% ce mois</span>
+            <span className="text-[11px] text-darkbrown/50 mt-1 block">
+              {orders.length} commande{orders.length > 1 ? "s" : ""}
             </span>
           </div>
           <div className="w-12 h-12 rounded-lg bg-cream-100 text-terracotta flex items-center justify-center">
@@ -91,7 +90,7 @@ export default function AdminDashboardPage() {
               {orders.length}
             </span>
             <span className="text-[11px] text-darkbrown/60 mt-1 block">
-              15 portions commandées
+              {orders.reduce((acc, o) => acc + o.items_count, 0)} portion{orders.length > 1 ? "s" : ""} commandée{orders.length > 1 ? "s" : ""}
             </span>
           </div>
           <div className="w-12 h-12 rounded-lg bg-cream-100 text-darkbrown flex items-center justify-center">
@@ -103,15 +102,14 @@ export default function AdminDashboardPage() {
         <div className="bg-white p-5 rounded-xl border border-cream-200 shadow-sm flex items-center justify-between">
           <div>
             <span className="text-xs font-semibold text-darkbrown/60 block">En cuisine &amp; Préparation</span>
-            <span className="font-serif text-2xl font-bold text-amber-700 mt-1 block">
+            <span className="font-serif text-2xl font-bold text-darkbrown mt-1 block">
               {pendingOrders.length}
             </span>
-            <span className="text-[11px] text-amber-800 font-medium flex items-center gap-1 mt-1">
-              <Clock className="w-3.5 h-3.5" />
-              <span>Créneau midi 11h30</span>
+            <span className="text-[11px] text-darkbrown/50 mt-1 block">
+              {pendingOrders.length === 0 ? "Aucune commande en attente" : "Créneaux en cours"}
             </span>
           </div>
-          <div className="w-12 h-12 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-lg bg-cream-100 text-darkbrown flex items-center justify-center">
             <Clock className="w-6 h-6" />
           </div>
         </div>
@@ -230,43 +228,59 @@ export default function AdminDashboardPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-cream-100">
-              {filteredOrders.map((order) => (
-                <tr key={order.id} className="hover:bg-cream-50/40 transition-colors">
-                  <td className="py-3.5 px-4 font-bold text-darkbrown">
-                    {order.order_number}
-                  </td>
-                  <td className="py-3.5 px-4">
-                    <span className="font-semibold block">{order.customer_name}</span>
-                    <span className="text-[11px] text-darkbrown/60">{order.customer_phone}</span>
-                  </td>
-                  <td className="py-3.5 px-4">
-                    <span className="block">{order.delivery_address} ({order.delivery_postal_code})</span>
-                    <span className="text-[11px] text-olive font-medium">{order.delivery_slot}</span>
-                  </td>
-                  <td className="py-3.5 px-4">
-                    {order.items.map((i, idx) => (
-                      <span key={idx} className="block text-[11px]">
-                        {i.quantity}x {i.product_name}
-                      </span>
-                    ))}
-                  </td>
-                  <td className="py-3.5 px-4 font-bold">
-                    {formatPrice(order.total_cents)}
-                  </td>
-                  <td className="py-3.5 px-4">
-                    {getStatusBadge(order.status)}
-                  </td>
-                  <td className="py-3.5 px-4 text-right">
-                    <button
-                      type="button"
-                      className="p-1.5 rounded hover:bg-cream-100 text-darkbrown/70 hover:text-darkbrown transition-colors"
-                      title="Voir le bon de livraison"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </button>
+              {filteredOrders.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="py-12 text-center text-darkbrown/60">
+                    <div className="flex flex-col items-center justify-center space-y-2">
+                      <div className="w-10 h-10 rounded-full bg-cream-100 flex items-center justify-center text-darkbrown/40">
+                        <Package className="w-5 h-5" />
+                      </div>
+                      <span className="font-semibold text-darkbrown">Aucune commande enregistrée</span>
+                      <p className="text-xs text-darkbrown/50 max-w-sm">
+                        Les nouvelles commandes passées par les clients apparaîtront ici automatiquement en temps réel.
+                      </p>
+                    </div>
                   </td>
                 </tr>
-              ))}
+              ) : (
+                filteredOrders.map((order) => (
+                  <tr key={order.id} className="hover:bg-cream-50/40 transition-colors">
+                    <td className="py-3.5 px-4 font-bold text-darkbrown">
+                      {order.order_number}
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <span className="font-semibold block">{order.customer_name}</span>
+                      <span className="text-[11px] text-darkbrown/60">{order.customer_phone}</span>
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <span className="block">{order.delivery_address} ({order.delivery_postal_code})</span>
+                      <span className="text-[11px] text-olive font-medium">{order.delivery_slot}</span>
+                    </td>
+                    <td className="py-3.5 px-4">
+                      {order.items.map((i, idx) => (
+                        <span key={idx} className="block text-[11px]">
+                          {i.quantity}x {i.product_name}
+                        </span>
+                      ))}
+                    </td>
+                    <td className="py-3.5 px-4 font-bold">
+                      {formatPrice(order.total_cents)}
+                    </td>
+                    <td className="py-3.5 px-4">
+                      {getStatusBadge(order.status)}
+                    </td>
+                    <td className="py-3.5 px-4 text-right">
+                      <button
+                        type="button"
+                        className="p-1.5 rounded hover:bg-cream-100 text-darkbrown/70 hover:text-darkbrown transition-colors"
+                        title="Voir le bon de livraison"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -274,3 +288,4 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
+

@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   UtensilsCrossed,
@@ -14,9 +15,9 @@ import {
   BarChart3,
   Settings,
   ExternalLink,
-  ShieldAlert,
-  Bell,
-  ChefHat
+  ChefHat,
+  LogOut,
+  ShieldCheck
 } from "lucide-react";
 
 const navigationItems = [
@@ -33,6 +34,51 @@ const navigationItems = [
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    // Check authentication
+    const hasAuth =
+      typeof window !== "undefined" &&
+      (localStorage.getItem("dar_admin_auth") === "true" ||
+        document.cookie.includes("dar_admin_session=authenticated"));
+
+    if (hasAuth) {
+      setIsAuthenticated(true);
+    } else if (pathname !== "/admin/login") {
+      router.push("/admin/login");
+    }
+  }, [pathname, router]);
+
+  const handleLogout = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("dar_admin_auth");
+      localStorage.removeItem("dar_admin_email");
+      document.cookie = "dar_admin_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+    setIsAuthenticated(false);
+    router.push("/admin/login");
+  };
+
+  // If on login page, render clean login card without admin shell
+  if (pathname === "/admin/login") {
+    return <>{children}</>;
+  }
+
+  // Loading state while checking auth
+  if (!mounted || !isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-cream-50 flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-3">
+          <div className="w-8 h-8 border-2 border-terracotta border-t-transparent rounded-full animate-spin" />
+          <span className="text-xs text-darkbrown/60">Vérification des accès atelier...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-cream-50/50 flex">
@@ -41,7 +87,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Brand Header */}
         <div className="p-5 border-b border-white/10 flex items-center justify-between">
           <Link href="/admin" className="flex items-center gap-3">
-            <div className="relative h-10 w-20 bg-white/95 rounded p-1 shadow-sm">
+            <div className="relative h-11 w-20 bg-white/95 rounded p-1 shadow-sm">
               <Image
                 src="/images/logo.png"
                 alt="DAR COUSCOUS"
@@ -83,7 +129,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         {/* Public Site Link & Atelier Info */}
-        <div className="p-4 border-t border-white/10 space-y-3">
+        <div className="p-4 border-t border-white/10 space-y-2.5">
           <div className="bg-white/5 p-2.5 rounded text-[11px] text-cream-200">
             <div className="flex items-center gap-1.5 text-olive-200 font-bold mb-0.5">
               <ChefHat className="w-3.5 h-3.5" />
@@ -97,9 +143,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             target="_blank"
             className="flex items-center justify-between px-3 py-2 rounded bg-white/10 hover:bg-white/15 text-xs text-white transition-colors"
           >
-            <span>Boutique en ligne</span>
+            <span>Boutique client</span>
             <ExternalLink className="w-3.5 h-3.5" />
           </Link>
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="w-full flex items-center justify-between px-3 py-2 rounded text-xs text-red-300 hover:bg-red-950/40 hover:text-red-200 transition-colors"
+          >
+            <span>Déconnexion</span>
+            <LogOut className="w-3.5 h-3.5" />
+          </button>
         </div>
       </aside>
 
@@ -117,23 +172,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
 
           <div className="flex items-center gap-4">
-            <Link
-              href="/admin/inventory"
-              className="flex items-center gap-1 text-xs text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded hover:bg-amber-100 transition-colors"
-            >
-              <ShieldAlert className="w-3.5 h-3.5" />
-              <span className="font-semibold">Alerte stock : DAR Végétal (4 restants)</span>
-            </Link>
+            <div className="flex items-center gap-1.5 text-xs text-olive font-medium bg-cream-50 px-3 py-1 rounded border border-cream-200">
+              <ShieldCheck className="w-4 h-4" />
+              <span>Session Admin Sécurisée</span>
+            </div>
 
             <div className="flex items-center gap-2 border-l border-cream-200 pl-4">
-              <div className="w-8 h-8 rounded-full bg-cream-200 text-darkbrown font-bold text-xs flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-darkbrown text-white font-bold text-xs flex items-center justify-center">
                 DC
               </div>
               <div className="text-left hidden sm:block">
                 <span className="text-xs font-bold text-darkbrown block leading-tight">
-                  Chef d&apos;Atelier
+                  admin@darcouscous.com
                 </span>
-                <span className="text-[10px] text-darkbrown/60">Responsable Production</span>
+                <span className="text-[10px] text-darkbrown/60">Responsable Direction</span>
               </div>
             </div>
           </div>
@@ -147,4 +199,3 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     </div>
   );
 }
-

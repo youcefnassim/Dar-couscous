@@ -1,8 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Mail, Phone, MapPin, ShieldCheck, ThermometerSnowflake } from "lucide-react";
 
 export function Footer() {
+  const pathname = usePathname();
+
+  // Ne pas afficher le footer public dans l'espace administration
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
   return (
     <footer className="bg-darkbrown text-cream-100 pt-16 pb-12 mt-auto border-t border-darkbrown-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -31,6 +32,11 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Ne pas afficher la navbar publique dans l'espace administration
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <>
       {/* Top Banner Notice for Paris Delivery */}
@@ -39,11 +45,11 @@ export function Header() {
       </div>
 
       <header
-        className={`sticky top-0 z-40 w-full transition-all duration-200 border-b ${
-          scrolled
-            ? "bg-white/95 backdrop-blur-md shadow-sm border-cream-200"
-            : "bg-white border-cream-200"
-        }`}
+
+        className={`sticky top-0 z-40 w-full transition-all duration-200 border-b ${scrolled
+          ? "bg-white/95 backdrop-blur-md shadow-sm border-cream-200"
+          : "bg-white border-cream-200"
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20 md:h-22">
@@ -68,9 +74,8 @@ export function Header() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`text-sm font-medium transition-colors hover:text-terracotta relative py-1 ${
-                      isActive ? "text-terracotta font-semibold" : "text-darkbrown"
-                    }`}
+                    className={`text-sm font-medium transition-colors hover:text-terracotta relative py-1 ${isActive ? "text-terracotta font-semibold" : "text-darkbrown"
+                      }`}
                   >
                     {link.label}
                     {isActive && (
@@ -138,11 +143,10 @@ export function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`block py-2 text-base font-medium rounded-md px-3 transition-colors ${
-                    isActive
-                      ? "bg-cream-100 text-terracotta font-semibold"
-                      : "text-darkbrown hover:bg-cream-50"
-                  }`}
+                  className={`block py-2 text-base font-medium rounded-md px-3 transition-colors ${isActive
+                    ? "bg-cream-100 text-terracotta font-semibold"
+                    : "text-darkbrown hover:bg-cream-50"
+                    }`}
                 >
                   {link.label}
                 </Link>
